@@ -1,0 +1,14 @@
+<view class="page">
+  <view class="header">
+    <text class="title">益智小游戏</text>
+    <text class="subtitle">今天先来一小关，活动活动大脑~</text>
+  </view>
+
+  <view class="content">
+    <text>这里先放一个占位小游戏，比如：请在心里从 1 数到 30，尽量匀速 😄</text>
+  </view>
+
+  <view class="bottom">
+    <button class="btn-next" bindtap="onFinish">完成小游戏</button>
+  </view>
+</view>

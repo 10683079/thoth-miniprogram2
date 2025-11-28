@@ -1,0 +1,14 @@
+<view class="page">
+  <view class="header">
+    <text class="title">每日手指操</text>
+    <text class="subtitle">跟着视频或语音，活动一下手指和大脑~</text>
+  </view>
+
+  <view class="content">
+    <text>这里先用占位说明：请做 1 遍你最熟悉的手指操，完成后点击下面按钮。</text>
+  </view>
+
+  <view class="bottom">
+    <button class="btn-next" bindtap="onFinish">我已完成手指操</button>
+  </view>
+</view>

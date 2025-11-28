@@ -1,0 +1,98 @@
+.page {
+  background: #FFF9F2;
+  min-height: 100vh;
+}
+
+/* 顶部进度 */
+.qa-header {
+  padding: 16px 24px 0 24px;
+}
+
+.qa-progress {
+  font-size: 14px;
+  color: #968C83;
+}
+
+/* 题干 */
+.qa-content {
+  padding: 8px 24px 0 24px;
+}
+
+.qa-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #4A3C31;
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+/* 选项列表 */
+.qa-options {
+  margin-top: 8px;
+}
+
+.qa-option {
+  background: #FFEFE2;
+  border-radius: 16px;
+  padding: 12px 16px;
+  margin-bottom: 12px;
+  font-size: 16px;
+  color: #4A3C31;
+}
+
+/* 选对：绿色 */
+.option-correct {
+  background: #54D28B;
+  color: #ffffff;
+}
+
+/* 选错：红色 */
+.option-wrong {
+  background: #FF7D7D;
+  color: #ffffff;
+}
+
+/* 底部按钮 */
+.qa-footer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 40rpx;
+  display: flex;
+  justify-content: center;
+  padding: 0 24px 0 24px;
+}
+
+.qa-next-btn {
+  width: 100%;
+  height: 88rpx;
+  line-height: 88rpx;
+  border-radius: 999px;
+  border: none;
+  background: linear-gradient(90deg, #FFA573, #FF8F55);
+  color: #ffffff;
+  font-size: 16px;
+}
+
+/* 未选时禁用态 */
+.qa-next-btn[disabled] {
+  opacity: 0.4;
+}
+.qa-explain {
+  margin-top: 16px;
+  padding: 12px 16px;
+  background: #FFF0E5;
+  border-radius: 12px;
+}
+
+.qa-explain-title {
+  font-size: 14px;
+  color: #968C83;
+  margin-right: 4px;
+}
+
+.qa-explain-text {
+  font-size: 14px;
+  color: #4A3C31;
+  line-height: 1.6;
+}

@@ -1,0 +1,72 @@
+<view class="page">
+
+<!-- 顶部日期 & 问候 -->
+<view class="header">
+  <text class="date">{{dateText}}</text>
+
+  <view class="hello-row">
+    <text class="hello-main">你好，今天一起动动脑</text>
+    <text class="hello-emoji">🔥</text>
+  </view>
+</view>
+
+<!-- 今日训练 卡片 -->
+<view class="card">
+  <view class="card-header">
+    <text class="card-title">今日训练</text>
+
+    <view class="card-tag">
+      <text class="card-tag-text">预计 3 分钟</text>
+    </view>
+  </view>
+
+  <!-- 趣味问答 -->
+  <view class="task-row">
+    <view class="task-left">
+      <view class="task-icon"></view>
+      <text class="task-name">趣味问答</text>
+    </view>
+    <view class="task-right">
+      <text class="task-progress">{{qaProgress}}</text>
+      <view class="task-circle"></view>
+    </view>
+  </view>
+
+  <!-- 益智小游戏 -->
+  <view class="task-row">
+    <view class="task-left">
+      <view class="task-icon"></view>
+      <text class="task-name">益智小游戏</text>
+    </view>
+    <view class="task-right">
+      <text class="task-progress">{{gameProgress}}</text>
+      <view class="task-circle"></view>
+    </view>
+  </view>
+
+  <!-- 每日手指操 -->
+  <view class="task-row">
+    <view class="task-left">
+      <view class="task-icon"></view>
+      <text class="task-name">每日手指操</text>
+    </view>
+    <view class="task-right">
+      <text class="task-progress">{{fingerProgress}}</text>
+      <view class="task-circle"></view>
+    </view>
+  </view>
+</view>
+
+<!-- 开始按钮 -->
+<view class="btn-wrapper">
+  <button class="start-btn" bindtap="onStartTraining">开始训练</button>
+</view>
+
+<!-- 打卡天数 -->
+<view class="streak">
+  <text>已坚持打卡 </text>
+  <text class="streak-number">{{streakDays}}</text>
+  <text> 天，真棒！</text>
+</view>
+
+</view>

@@ -1,0 +1,47 @@
+<view class="page">
+
+<!-- 顶部进度 -->
+<view class="qa-header">
+  <text class="qa-progress">
+    第 {{ current + 1 }} / {{ list.length }} 题
+  </text>
+</view>
+
+<!-- 题干 -->
+<view class="qa-content">
+  <view class="qa-title">
+    {{ curQuestion.title }}
+  </view>
+
+  <!-- 选项列表 -->
+  <view class="qa-options">
+    <block wx:for="{{ curQuestion.options }}" wx:key="index">
+      <view
+        class="qa-option {{ selected === index && isCorrect ? ' option-correct' : '' }} {{ selected === index && !isCorrect && selected !== -1 ? ' option-wrong' : '' }} {{ selected !== index && showNext && curQuestion.answerIndex === index ? ' option-correct' : '' }}"
+        data-index="{{ index }}"
+        bindtap="onSelect"
+      >
+        {{ item }}
+      </view>
+    </block>
+  </view>
+
+  <!-- 答案解析：只在作答后出现 -->
+  <view wx:if="{{ showNext && curQuestion.explanation }}" class="qa-explain">
+    <text class="qa-explain-title">解析：</text>
+    <text class="qa-explain-text">{{ curQuestion.explanation }}</text>
+  </view>
+</view>
+
+<!-- 底部按钮 -->
+<view class="qa-footer">
+  <button
+    class="qa-next-btn"
+    bindtap="goNext"
+    disabled="{{ !showNext }}"
+  >
+    {{ current + 1 >= list.length ? '完成并进入下一环' : '下一题' }}
+  </button>
+</view>
+
+</view>

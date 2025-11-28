@@ -1,0 +1,181 @@
+/* 整体背景：#FFF9F2 米白色 */
+page {
+  background-color: #FFF9F2;
+}
+
+/* 页面容器 */
+.page {
+  min-height: 100vh;
+  background-color: #FFF9F2;
+  padding: 72rpx 48rpx 160rpx; /* 顶部多留一点空间 */
+  box-sizing: border-box;
+}
+
+/* 顶部日期 + 问候 ========================= */
+
+.header {
+  margin-top: 40rpx;   /* 距离导航栏稍远一点 */
+  margin-bottom: 56rpx; /* 和卡片拉开距离，让卡片整体更靠下 */
+}
+
+.date {
+  font-size: 34rpx;    /* 日期加大 */
+  color: #968C83;
+  margin-bottom: 18rpx; /* 日期和欢迎语间距加大 */
+}
+
+.hello-row {
+  display: flex;
+  align-items: center;
+}
+
+.hello-main {
+  font-size: 56rpx;    /* 欢迎语更大 */
+  font-weight: 700;    /* 更粗一点 */
+  color: #4A3C31;
+  line-height: 1.4;
+}
+
+.hello-emoji {
+  margin-left: 10rpx;
+  font-size: 42rpx;
+}
+
+/* 「今日训练」卡片 ========================= */
+
+.card {
+  /* header 已经加大间距，这里不需要额外 margin-top */
+  margin-bottom: 60rpx;
+  background-color: #FFFFFF;
+  border-radius: 24rpx;
+  padding: 36rpx 28rpx; /* 内边距略增，显得更大气 */
+  box-shadow: 0 16rpx 48rpx rgba(255, 143, 85, 0.15);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28rpx;
+}
+
+.card-title {
+  font-size: 40rpx;    /* 标题更大更粗 */
+  font-weight: 700;
+  color: #4A3C31;
+}
+
+.card-tag {
+  padding: 10rpx 24rpx;
+  border-radius: 999rpx;
+  background-color: #FFF0E5;
+}
+
+.card-tag-text {
+  font-size: 30rpx;    /* “预计3分钟” 字号增大 */
+  color: #FF8F55;
+  font-weight: 600;
+}
+
+/* 三项任务行 =============================== */
+
+.task-row {
+  display: flex;
+  align-items: center;
+  height: 132rpx;      /* 行高略加大，方便点击 */
+}
+
+/* 左侧图标 + 文本 */
+.task-left {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+/* 32x32 图标，用圆点占位（整体略放大） */
+.task-icon {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 50%;
+  background-color: #FFD6B3;
+  margin-right: 24rpx;
+}
+
+.task-name {
+  font-size: 36rpx;    /* 任务标题加大加粗 */
+  font-weight: 600;
+  color: #4A3C31;
+}
+
+/* 右侧进度 + 圆环状态 */
+.task-right {
+  display: flex;
+  align-items: center;
+}
+
+.task-progress {
+  font-size: 32rpx;    /* 0 / 4 等数字加大加粗 */
+  font-weight: 600;
+  color: #968C83;
+  margin-right: 20rpx;
+}
+
+/* 未完成：灰色空心圆环 */
+.task-circle {
+  width: 60rpx;
+  height: 60rpx;
+  border-radius: 50%;
+  border: 2rpx solid #D8D2C8;
+  box-sizing: border-box;
+}
+
+/* 底部按钮 & 激励文案 ===================== */
+
+/* 按钮整体向上移动：bottom 数值越大越靠上 */
+.btn-wrapper {
+  position: fixed;
+  left: 48rpx;
+  right: 48rpx;
+  bottom: 220rpx;  /* 原来 140rpx → 提高到 220rpx 往上挪 */
+}
+
+/* 主按钮：线性渐变 #FFA573 → #FF8F55 */
+.start-btn {
+  width: 100%;
+  height: 136rpx;      /* 高度略加大，方便点击 */
+  border-radius: 999rpx;
+  border: none;
+  font-size: 36rpx;    /* “开始训练” 更大更粗 */
+  font-weight: 700;
+  color: #FFFFFF;
+  background-image: linear-gradient(90deg, #FFA573, #FF8F55);
+  box-shadow: 0 12rpx 32rpx rgba(255, 143, 85, 0.4);
+
+  /* 关键：用 flex 做真正的上下左右居中 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 按压态反馈 */
+.start-btn:active {
+  transform: scale(0.96);
+  background-image: linear-gradient(90deg, #FF9150, #FF7A33);
+}
+
+/* 激励文案：一起向上移动一些 */
+.streak {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 140rpx;   /* 原来 80rpx → 提高到 140rpx，和按钮距离约 16px+ */
+  text-align: center;
+  font-size: 28rpx;
+  color: #968C83;
+}
+
+.streak-number {
+  font-size: 34rpx;
+  color: #FF8F55;
+  font-weight: 700;
+}
