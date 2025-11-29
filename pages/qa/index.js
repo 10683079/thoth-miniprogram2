@@ -1,75 +1,151 @@
-// pages/qa/index.js
+// pages/index/index.js
 Page({
   data: {
-    list: [],          // 题目列表
-    current: 0,        // 当前题索引
-    curQuestion: {},   // 当前题对象
-    selected: -1,      // 当前选中的选项索引，-1 表示未选
-    isCorrect: false,  // 当前这题是否回答正确
-    showNext: false    // 是否允许点击“下一题/完成”按钮
+    // 顶部日期
+    dateText: '',
+    // 三个模块进度
+    qaProgress: '0 / 4',
+    gameProgress: '0 / 1',
+    fingerProgress: '0 / 1',
+    // 已坚持天数
+    streakDays: 0,
+    // 今日题库（从云端获取）
+    dailyQuestions: []
   },
 
-  // 接收首页传来的题目列表
+  // -----------------------------
+  // 生命周期
+  // -----------------------------
   onLoad() {
-    const eventChannel = this.getOpenerEventChannel();
-    eventChannel.on('questions', data => {
-      console.log('QA 页收到题库 =', data);
-      const list = data.list || [];
-      this.setData({
-        list,
-        curQuestion: list[0] || {}
-      });
+    this.initDate();
+    this.fetchPersistDays();
+    this.fetchDailyQuestions();
+  },
+
+  onShow() {
+    // 回到首页时再刷新一次坚持天数
+    this.fetchPersistDays();
+  },
+
+  // -----------------------------
+  // 顶部日期：2025年11月26日 · 星期三
+  // -----------------------------
+  initDate() {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth() + 1;
+    const day = now.getDate();
+    const weekdayMap = ['日', '一', '二', '三', '四', '五', '六'];
+    const weekday = weekdayMap[now.getDay()];
+
+    const dateText = `${year}年${month}月${day}日 · 星期${weekday}`;
+    this.setData({ dateText });
+  },
+
+  // 今天的日期字符串：2025-11-26
+  getTodayStr() {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth() + 1;
+    const day = now.getDate();
+    const mm = month < 10 ? '0' + month : '' + month;
+    const dd = day < 10 ? '0' + day : '' + day;
+    return `${year}-${mm}-${dd}`;
+  },
+
+  // -----------------------------
+  // 从云函数获取：已坚持打卡天数
+  // 云函数名称：getpersistDays
+  // -----------------------------
+  fetchPersistDays() {
+    wx.cloud.callFunction({
+      name: 'getpersistDays',
+      success: res => {
+        console.log('getpersistDays 返回：', res);
+        if (res.result && res.result.success) {
+          this.setData({
+            streakDays: res.result.persistDays || 0
+          });
+        }
+      },
+      fail: err => {
+        console.error('获取坚持天数失败', err);
+      }
     });
   },
 
-  // 点击选项
-  onSelect(e) {
-    // 已经选过了就不允许再选（防止乱点）
-    if (this.data.selected !== -1) return;
+  // -----------------------------
+  // 从云函数获取今日题库
+  // 云函数名称：getDailyQuestions
+  // 返回格式示例：
+  // { success: true, list: [ { title, options, answerIndex, ... }, ... ] }
+  // -----------------------------
+  fetchDailyQuestions() {
+    wx.cloud.callFunction({
+      name: 'getDailyQuestions',
+      data: {
+        count: 4     // 要多少题，这里先写死 4 题
+      },
+      success: res => {
+        console.log('getDailyQuestions 返回：', res);
+        const result = res.result || {};
+        const list = result.list || [];
 
-    const idx = e.currentTarget.dataset.index;
-    const correct = idx === this.data.curQuestion.answerIndex;
-
-    this.setData({
-      selected: idx,
-      isCorrect: correct,
-      showNext: true
-    });
-
-
-    // 也可以弹个 toast
-    wx.showToast({
-      title: correct ? '答对啦' : '再想想，下次加油',
-      icon: 'none'
+        // 更新题库 + 进度显示
+        this.setData({
+          dailyQuestions: list,
+          qaProgress: `0 / ${list.length || 4}`
+        });
+      },
+      fail: err => {
+        console.error('获取每日题库失败', err);
+        wx.showToast({
+          title: '题库获取失败',
+          icon: 'none'
+        });
+      }
     });
   },
 
-  // 点击 “下一题 / 完成并进入下一环”
-  goNext() {
-    const next = this.data.current + 1;
+  // -----------------------------
+  // 点击「开始训练」按钮
+  // 先进入趣味问答页，并把题目 list 传过去
+  // -----------------------------
+  onStartTraining() {
+    const list = this.data.dailyQuestions || [];
 
-    // 已经是最后一题
-    if (next >= this.data.list.length) {
+    if (!list.length) {
       wx.showToast({
-        title: '答题完成，进入下一环节',
-        icon: 'success'
+        title: '题目准备中，请稍后再试',
+        icon: 'none'
       });
-
-      // TODO：这里进入益智小游戏环节
-      wx.navigateTo({
-        url: '/pages/game/index'
-      });
-
       return;
     }
 
-    // 进入下一题，重置状态
-    this.setData({
-      current: next,
-      curQuestion: this.data.list[next],
-      selected: -1,
-      isCorrect: false,
-      showNext: false
+    console.log('开始训练，尝试跳转到问答页...');
+
+    // 只需要跳转，QA 页面会在 onLoad 中自动获取题目
+    wx.navigateTo({
+      url: '/pages/qa/index',
+    });
+},
+
+  // 如果你在「趣味问答」那一行也绑定了点击事件，可以直接复用
+  goQA() {
+    this.onStartTraining();
+  },
+
+  // 占位：益智小游戏
+  goGame() {
+    wx.navigateTo({
+      url: '/pages/game/index'
+    });
+  },
+
+  // 占位：每日手指操
+  goFinger() {
+    wx.navigateTo({
+      url: '/pages/finger/index'
     });
   }
 });
