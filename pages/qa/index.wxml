@@ -1,47 +1,72 @@
-<view class="page">
-
-<!-- 顶部进度 -->
-<view class="qa-header">
-  <text class="qa-progress">
-    第 {{ current + 1 }} / {{ list.length }} 题
-  </text>
-</view>
-
-<!-- 题干 -->
-<view class="qa-content">
-  <view class="qa-title">
-    {{ curQuestion.title }}
-  </view>
-
-  <!-- 选项列表 -->
-  <view class="qa-options">
-    <block wx:for="{{ curQuestion.options }}" wx:key="index">
-      <view
-        class="qa-option {{ selected === index && isCorrect ? ' option-correct' : '' }} {{ selected === index && !isCorrect && selected !== -1 ? ' option-wrong' : '' }} {{ selected !== index && showNext && curQuestion.answerIndex === index ? ' option-correct' : '' }}"
-        data-index="{{ index }}"
-        bindtap="onSelect"
-      >
-        {{ item }}
-      </view>
+<view class="page-background"></view>
+<view class="container">
+    <block wx:if="{{questions.length === 0}}">
+        <view class="loading-box">
+            <text>正在加载题目...</text>
+        </view>
     </block>
-  </view>
+    
+    <block wx:else>
+        <view class="progress-header">
+            <text class="count-label">当前进度</text>
+            <text class="count-text main-color">第 {{currentQuestionIndex + 1}} / {{questions.length}} 题</text>
+        </view>
 
-  <!-- 答案解析：只在作答后出现 -->
-  <view wx:if="{{ showNext && curQuestion.explanation }}" class="qa-explain">
-    <text class="qa-explain-title">解析：</text>
-    <text class="qa-explain-text">{{ curQuestion.explanation }}</text>
-  </view>
-</view>
+        <view class="quiz-card-wrapper">
+            <view class="question-title">
+                {{currentQuestion.title}}
+            </view>
 
-<!-- 底部按钮 -->
-<view class="qa-footer">
-  <button
-    class="qa-next-btn"
-    bindtap="goNext"
-    disabled="{{ !showNext }}"
-  >
-    {{ current + 1 >= list.length ? '完成并进入下一环' : '下一题' }}
-  </button>
-</view>
+            <view class="options-list">
+                <view 
+                    wx:for="{{currentQuestion.options}}" 
+                    wx:key="*this" 
+                    data-index="{{index}}"
+                    bindtap="handleSelectOption"
+                    class="option-item {{selectedOptionIndex === index ? 'selected' : ''}} {{isAnswerSubmitted && index === currentQuestion.answerIndex ? 'correct' : ''}} {{isAnswerSubmitted && selectedOptionIndex === index && selectedOptionIndex !== currentQuestion.answerIndex ? 'wrong' : ''}}"
+                >
+                    <view class="option-prefix">
+                        <text>{{index + 1}}</text>
+                        <block wx:if="{{isAnswerSubmitted}}">
+                            <text wx:if="{{index === currentQuestion.answerIndex}}" class="icon-check">✅</text>
+                            <text wx:elif="{{selectedOptionIndex === index && selectedOptionIndex !== currentQuestion.answerIndex}}" class="icon-cross">❌</text>
+                        </block>
+                    </view>
+                    <text class="option-text">{{item}}</text>
+                </view>
+            </view>
+        </view>
+        
+        <view class="action-area">
+            <block wx:if="{{isAnswerSubmitted}}">
+                <view class="explanation-box">
+                    <view class="explanation-title">
+                        <text wx:if="{{selectedOptionIndex === currentQuestion.answerIndex}}" class="result-text success-color">✅ 恭喜您，回答正确！</text>
+                        <text wx:else class="result-text error-color">❌ 很遗憾，回答错误。</text>
+                    </view>
+                    <view class="explanation-content">
+                        <text class="explanation-label">解析：</text>
+                        {{currentQuestion.explanation}}
+                    </view>
+                </view>
 
+                <button 
+                    class="next-button" 
+                    bindtap="handleNextQuestion"
+                >
+                    {{currentQuestionIndex === questions.length - 1 ? '🎉 完成问答，进入小游戏' : '下一题'}}
+                </button>
+            </block>
+
+            <block wx:else>
+                <button 
+                    class="submit-button" 
+                    bindtap="handleSubmitAnswer"
+                    disabled="{{selectedOptionIndex === -1}}"
+                >
+                    提交答案
+                </button>
+            </block>
+        </view>
+    </block>
 </view>
